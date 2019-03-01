@@ -10,6 +10,9 @@ var game = {
     //Store player correct inputs
     playerHits: [],
 
+    //Stor Counter
+    counter: 0,
+
     //Store answer variable
     answer: [""],
 
@@ -29,6 +32,8 @@ var game = {
 
     //This method gets userinput and stores it in var input
     getPlayerChoice: function () {
+        game.playerInputs = [];
+        game.playerHits = [];
 
         document.onkeyup = function (event) {
             var input = event.key.toLowerCase();
@@ -47,16 +52,21 @@ var game = {
 
     //This method generates the answer
     generateAnswer: function () {
+        game.answerLength = [];
+
         var answer = game.wordBank[Math.floor(Math.random() * game.wordBank.length)];
         game.answer = answer.toLowerCase();
 
-        for ( var i = 0; i < answer.length; i++) {
+        for (var i = 0; i < answer.length; i++) {
             game.answerLength.push("_");
         }
     },
 
     //This method checks to see if the player input is included in the answer
     checkPlayerChoice: function (input) {
+
+        //Addes to counter for guessing
+        game.counter++;
 
         //Checks to see if input is in our answer
         if (game.answer.toLowerCase().includes(input)) {
@@ -67,23 +77,39 @@ var game = {
                     game.answerLength[i] = input;
                 }
             }
-            console.log(game.answerLength)
-            console.log("playerhits: " + game.playerHits);
+            console.log(game.answerLength);
+            // console.log("playerhits: " + game.playerHits);
 
             if (game.playerHits.length === game.answer.length) {
                 game.isWon = true;
                 console.log("you win");
             }
         } else {
-            console.log("nope");
+            console.log(game.answerLength);
         }
-        console.log(game.playerInputs);
+        // console.log(game.playerInputs);
+    },
+
+    restartValues: function () {
+        game.playerInputs = [];
+        game.playerHits = [];
+        game.answer = [""];
+        game.answerLength = [];
+        game.isWon = false;
     }
 }
+//Generates new spell when the button is clicked
+document.getElementById("generate-spell").addEventListener("click", function () {
+    game.restartValues();
+    game.generateAnswer();
+    console.log(game.answerLength);
+});
 
 
-game.generateAnswer();
-console.log(game.answerLength);
 do {
     game.getPlayerChoice();
 } while (game.isWon);
+
+
+
+
