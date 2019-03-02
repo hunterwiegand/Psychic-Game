@@ -15,9 +15,10 @@
     <div class="container">
         <div class="jumbotron">
             <h1 class="display-4">Greetings Traveler!</h1>
-            <p class="lead">Are you lost? I don't often get visiters being this far from the mainland</p>
+            <p class="lead">Are you lost? I don't often get visitors being this far from the mainland.</p>
             <hr class="my-4">
             <p>My name is Merlin and I've devoted my life to the mystical world of magic. Stay a while and you might learn a few things.</p>
+            <p>*Try and guess the spell Merlin is casting*</p>
             <p class="lead">
                 <a id="generate-spell" class="btn btn-primary btn-lg" href="#" role="button">Generate Spell</a>
             </p>
@@ -26,17 +27,28 @@
         <div>
             <div class="row">
 
-                <div id="guesses" class="col-md-1 my-3 float-left">
+                <div class="col-md-1 my-12">
                     <h4>Guesses: </h4>
-                    <p></p>
+                    <p id="guesses"></p>
                 </div>
 
                 <div class="col-md-12">
-                    <h2 class="text-center">_  _  _  _  _  _</h2>
+                    <h2 id="answer-length" class="text-center"></h2>
                 </div>
 
                 <div class="col-md-12 mt-4">
-                    <h5>Attempts left: </h5>
+                    <h4>Attempts left: </h4>
+                    <p id="player-lives"></p>
+                </div>
+
+                <div class="col-md-12 mt-4">
+                    <h4>Wins: </h4>
+                    <p id="win-counter"></p>
+                </div>
+
+                <div class="col-md-12 mt-4">
+                    <h4>Losses: </h4>
+                    <p id="loss-counter"></p>
                 </div>
             </div>
         </div>
