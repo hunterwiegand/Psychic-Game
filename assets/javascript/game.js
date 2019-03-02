@@ -10,6 +10,9 @@ var game = {
     //Store player correct inputs
     playerHits: [],
 
+    //Store Player remaining tries
+    playerLives: "8",
+
     //Stor Counter
     counter: 0,
 
@@ -18,12 +21,25 @@ var game = {
 
     //Used to store the amount of _ needed for word
     answerLength: [],
+    //AnswerLength as String
+    sAnswerLength: "",
 
     //Create word bank for guessable words
-    wordBank: ["Thundaga", "Blizzard", "Fira", "Gravira", "Curaga", "Areo", "Stopra"],
+    wordBank: ["Thundaga", "Blizzard", "Fira", "Gravira", "Curaga", "Aero", "Stopra", "lavalash", "dispell", "comet", "abrakadabra", "shock", "deathcoil", "haste"],
 
+    //Create boolean to see if player won game.
     isWon: false,
 
+    //Create win/loss counter
+    winCounter: "0",
+    lossCounter: "0",
+
+    //give target vars for html elements
+    targetGuesses: document.getElementById("guesses"),
+    targetAnswerLength: document.getElementById("answer-length"),
+    targetPlayerLives : document.getElementById("player-lives"),
+    targetLossCounter: document.getElementById("loss-counter"),
+    targetWinCounter: document.getElementById("win-counter"),
 
     //Getter for answer
     getAnswer: function () {
@@ -40,14 +56,18 @@ var game = {
 
             //Checks to see if player already guessed letter
             if (game.playerInputs.includes(input)) {
-                console.log("You already guessed that");
+                alert("You already guessed that");
                 return;
             }
             game.playerInputs.push(input);
 
             game.checkPlayerChoice(input);
-        }
+            // console.log(game.playerLives);
 
+            // console.log(game.playerInputs);
+        game.targetPlayerLives.textContent = game.playerLives;
+        game.targetGuesses.textContent = game.playerInputs.join(" ");
+        }
     },
 
     //This method generates the answer
@@ -60,6 +80,11 @@ var game = {
         for (var i = 0; i < answer.length; i++) {
             game.answerLength.push("_");
         }
+
+        game.sAnswerLength = game.answerLength.join(" ");
+
+        var targetAnswer = document.getElementById("answer-length");
+        targetAnswer.textContent = game.sAnswerLength;
     },
 
     //This method checks to see if the player input is included in the answer
@@ -77,39 +102,65 @@ var game = {
                     game.answerLength[i] = input;
                 }
             }
-            console.log(game.answerLength);
+
+            game.sAnswerLength = game.answerLength.join(" ");
+
+            game.targetAnswerLength.textContent = game.sAnswerLength;
+            // console.log(game.sAnswerLength);
             // console.log("playerhits: " + game.playerHits);
 
             if (game.playerHits.length === game.answer.length) {
                 game.isWon = true;
-                console.log("you win");
+                alert("You learned the spell!, try your luck at another.");
+                game.winCounter++;
+                game.targetWinCounter.textContent = game.winCounter;
+                game.restartValues();
             }
         } else {
-            console.log(game.answerLength);
+            game.playerLives--;
+            console.log(game.atemptsRemaining)
+            // console.log(game.sAnswerLength);
+            // console.log(game.answerLength);
+            if (game.playerLives <= 0) {
+                alert("Yikes, let us try another spell");
+                game.lossCounter++;
+                game.targetLossCounter.textContent = game.lossCounter;
+                game.targetAnswerLength.textContent = game.answer;
+                game.restartValues();
+            }
         }
-        // console.log(game.playerInputs);
+
+        // console.log(game.playerLives);
+        // game.targetPlayerLives.textContent = game.playerLives;
     },
 
     restartValues: function () {
+        var guessingDiv = document.getElementById("guesses");
+        guessingDiv.textContent = "";
         game.playerInputs = [];
         game.playerHits = [];
         game.answer = [""];
         game.answerLength = [];
         game.isWon = false;
+        game.playerLives = "8";
+
+    },
+
+    generateSpell: function () {
+        document.getElementById("generate-spell").addEventListener("click", function () {
+            game.restartValues();
+            game.generateAnswer();
+            console.log(game.sAnswerLength);
+        });
     }
 }
+
 //Generates new spell when the button is clicked
-document.getElementById("generate-spell").addEventListener("click", function () {
-    game.restartValues();
-    game.generateAnswer();
-    console.log(game.answerLength);
-});
+game.generateSpell();
 
-
-do {
+if (!game.isWon && game.playerLives >= 0) {
     game.getPlayerChoice();
-} while (game.isWon);
+} else {
 
-
-
+}
 
